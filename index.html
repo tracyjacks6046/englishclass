@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Irregular Verbs Quiz</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 60%;
+      margin: 20px auto;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+    button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">Irregular Verbs Quiz</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Simple Tense</th>
+      <th>Past Tense</th>
+      <th>Past Participle</th>
+    </tr>
+  </thead>
+  <tbody id="quizTableBody"></tbody>
+</table>
+
+<button onclick="submitAnswers()">Submit Answers</button>
+<button onclick="showAnswers()">Show Answers</button>
+<button onclick="tryOtherVerbs()">Try Other 10 Verbs</button>
+<button onclick="clearAll()">Clear All</button>
+
+<script>
+  // Database of irregular verbs
+  const verbsDatabase = [
+    ["am", "was", "been"],
+    ["are", "were", "been"],
+    ["is", "was", "been"],
+    ["bear", "bore", "born"],
+    ["beat", "beat", "beaten"],
+    ["become", "became", "become"],
+    ["bend", "bent", "bent"],
+    ["bid", "bade/bid", "bidden/bid"],
+    ["break", "broke", "broken"],
+    ["build", "built", "built"],
+    ["burn", "burned/burnt", "burned/burnt"],
+    ["buy", "bought", "bought"],
+    ["catch", "caught", "caught"],
+    ["choose", "chose", "chosen"],
+    ["come", "came", "come"],
+    ["cost", "cost", "cost"],
+    ["cut", "cut", "cut"],
+    ["do", "did", "done"],
+    ["dream", "dreamed/dreamt", "dreamed/dreamt"],
+    ["drink", "drank", "drunk"],
+    ["drive", "drove", "driven"],
+    ["eat", "ate", "eaten"],
+    ["fall", "fell", "fallen"],
+    ["feed", "fed", "fed"],
+    ["feel", "felt", "felt"],
+    ["fight", "fought", "fought"],
+    ["find", "found", "found"],
+    ["fit", "fit", "fit"],
+    ["fly", "flew", "flown"],
+    ["found", "founded", "founded"],
+    ["get", "got", "gotten/got"],
+    ["give", "gave", "given"],
+    ["go", "went", "gone"],
+    ["hang", "hung", "hung"],
+    ["have", "had", "had"],
+    ["hide", "hid", "hidden"],
+    ["hit", "hit", "hit"],
+    ["hurt", "hurt", "hurt"],
+    ["input", "input", "input"],
+    ["keep", "kept", "kept"],
+    ["know", "knew", "known"],
+    ["lay", "laid", "laid"],
+    ["leave", "left", "left"],
+    ["lend", "lent", "lent"],
+    ["let", "let", "let"],
+    ["lose", "lost", "lost"],
+    ["make", "made", "made"],
+    ["mean", "meant", "meant"],
+    ["meet", "met", "met"],
+    ["overcome", "overcame", "overcome"],
+    ["pay", "paid", "paid"],
+    ["put", "put", "put"],
+    ["quit", "quit", "quit"],
+    ["read", "read", "read"],
+    ["ride", "rode", "ridden"],
+    ["ring", "rang", "rung"],
+    ["rise", "rose", "risen"],
+    ["run", "ran", "run"],
+    ["say", "said", "said"],
+    ["see", "saw", "seen"],
+    ["sell", "sold", "sold"],
+    ["send", "sent", "sent"],
+    ["set", "set", "set"],
+    ["shake", "shook", "shaken"],
+    ["show", "showed", "shown"],
+    ["sing", "sang", "sung"],
+    ["sit", "sat", "sat"],
+    ["sleep", "slept", "slept"],
+    ["smell", "smelled/smelt", "smelled/smelt"],
+    ["speak", "spoke", "spoken"],
+    ["spend", "spent", "spent"],
+    ["spread", "spread", "spread"],
+    ["stand", "stood", "stood"],
+    ["steal", "stole", "stolen"],
+    ["stick", "stuck", "stuck"],
+    ["swim", "swam", "swum"],
+    ["take", "took", "taken"],
+    ["teach", "taught", "taught"],
+    ["tell", "told", "told"],
+    ["think", "thought", "thought"],
+    ["throw", "threw", "thrown"],
+    ["thrust", "thrust", "thrust"],
+    ["understand", "understood", "understood"],
+    ["upset", "upset", "upset"],
+    ["wear", "wore", "worn"],
+    ["wed", "wed", "wed"],
+    ["write", "wrote", "written"],
+    // Add the remaining 84 verbs here
+  ];
+
+  // Function to generate a random set of 10 verbs
+  function generateRandomVerbs() {
+    const randomVerbs = [];
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * verbsDatabase.length);
+      randomVerbs.push(verbsDatabase[randomIndex]);
+    }
+    return randomVerbs;
+  }
+
+  // Function to display verbs in the table
+  function displayVerbsInTable() {
+    const quizTableBody = document.getElementById("quizTableBody");
+    quizTableBody.innerHTML = "";
+
+    const randomVerbs = generateRandomVerbs();
+    for (const verb of randomVerbs) {
+      const row = document.createElement("tr");
+
+      // First column (Simple Tense)
+      const simpleTenseCell = document.createElement("td");
+      simpleTenseCell.textContent = verb[0];
+      row.appendChild(simpleTenseCell);
+
+      // Second column (Past Tense - initially blank)
+      const pastTenseCell = document.createElement("td");
+      const pastTenseInput = document.createElement("input");
+      pastTenseInput.type = "text";
+      pastTenseCell.appendChild(pastTenseInput);
+      row.appendChild(pastTenseCell);
+
+      // Third column (Past Participle - initially blank)
+      const pastParticipleCell = document.createElement("td");
+      const pastParticipleInput = document.createElement("input");
+      pastParticipleInput.type = "text";
+      pastParticipleCell.appendChild(pastParticipleInput);
+      row.appendChild(pastParticipleCell);
+
+      quizTableBody.appendChild(row);
+    }
+  }
+
+  // Function to submit answers
+  function submitAnswers() {
+    const quizTableBody = document.getElementById("quizTableBody");
+    const rows = quizTableBody.getElementsByTagName("tr");
+    let allCorrect = true;
+
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName("td");
+      const simpleTense = cells[0].textContent;
+      const pastTenseInput = cells[1].getElementsByTagName("input")[0].value;
+      const pastParticipleInput = cells[2].getElementsByTagName("input")[0].value;
+
+      // Check user's answers
+      const correctPastTense = verbsDatabase.find(verb => verb[0] === simpleTense)[1].toLowerCase();
+      const correctPastParticiple = verbsDatabase.find(verb => verb[0] === simpleTense)[2].toLowerCase();
+
+      if (pastTenseInput.toLowerCase() !== correctPastTense || pastParticipleInput.toLowerCase() !== correctPastParticiple) {
+        allCorrect = false;
+        // Provide feedback for each incorrect answer
+        alert(`Incorrect for "${simpleTense}":\nPast Tense: ${correctPastTense}\nPast Participle: ${correctPastParticiple}`);
+      }
+    }
+
+    // Provide overall feedback to the user
+    if (allCorrect) {
+      alert("Congratulations! All answers are correct. 🎉");
+    } else {
+      alert("Some answers are incorrect. Please review the feedback.");
+    }
+  }
+
+  // Function to show correct answers
+  function showAnswers() {
+    const quizTableBody = document.getElementById("quizTableBody");
+    const rows = quizTableBody.getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName("td");
+      const simpleTense = cells[0].textContent;
+      const pastTenseInput = cells[1].getElementsByTagName("input")[0];
+      const pastParticipleInput = cells[2].getElementsByTagName("input")[0];
+
+      // Replace the input fields with the correct answers
+      pastTenseInput.value = verbsDatabase.find(verb => verb[0] === simpleTense)[1];
+      pastParticipleInput.value = verbsDatabase.find(verb => verb[0] === simpleTense)[2];
+    }
+  }
+
+  // Function to try other 10 verbs
+  function tryOtherVerbs() {
+    // Display a new set of 10 random verbs
+    displayVerbsInTable();
+  }
+
+  // Function to clear all input
+  function clearAll() {
+    const quizTableBody = document.getElementById("quizTableBody");
+    const inputFields = quizTableBody.querySelectorAll("input");
+    inputFields.forEach(input => input.value = "");
+  }
+
+  // Initial display of 10 random verbs
+  displayVerbsInTable();
+</script>
+
+</body>
+</html>
+
